@@ -6,17 +6,30 @@ const authorize = require("../middleware/role.middleware");
 
 const router = express.Router();
 
-// List transactions
-router.get("/", auth, authorize(["admin", "analyst", "viewer"]), async (req, res) => {
-  try {
-    const filter = req.user.role === "admin" ? {} : { userId: req.user.id };
-    const transactions = await Transaction.find(filter).sort({ date: -1 });
-    res.json(transactions);
-  } catch (err) {
-    res.status(500).json({ message: err.message || "Failed to fetch transactions" });
-  }
-});
+router.get("/", auth, authorize(["admin", "analyst"]), async (req, res) => {
+  const { type, category, startDate, endDate, page = 1 } = req.query;
 
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const filter = {};
+
+  if (type) filter.type = type;
+  if (category) filter.category = category;
+
+  if (startDate || endDate) {
+    filter.date = {};
+    if (startDate) filter.date.$gte = new Date(startDate);
+    if (endDate) filter.date.$lte = new Date(endDate);
+  }
+
+  const txs = await Transaction.find(filter)
+    .sort({ date: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  res.json(txs);
+});
 // Create transaction
 router.post("/", auth, authorize(["admin", "analyst"]), async (req, res) => {
   try {
