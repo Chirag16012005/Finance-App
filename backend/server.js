@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 const app = require("./app");
 
-
-const MONGO_URI = "mongodb://127.0.0.1:27017/finance-db";
-const PORT = 3000;
+const { MONGO_URI, PORT } = require("./config/env");
 
 mongoose.connect(MONGO_URI)
   .then(() => {

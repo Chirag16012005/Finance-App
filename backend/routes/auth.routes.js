@@ -1,16 +1,11 @@
-// src/routes/auth.routes.js
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User.model");
-const {RegisterController,LoginController}=require("../controllers/auth.controller");
+const { RegisterController, LoginController } = require("../controllers/auth.controller");
+const validate = require("../middleware/validate.middleware");
+const { registerSchema, loginSchema } = require("../validators/auth.schema");
 
 const router = express.Router();
 
-// Register
-router.post("/register",RegisterController);
-
-// Login
-router.post("/login", LoginController);
+router.post("/register", validate(registerSchema), RegisterController);
+router.post("/login", validate(loginSchema), LoginController);
 
 module.exports = router;
