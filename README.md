@@ -1,4 +1,4 @@
-# Zorvyn Backend
+# Zorvyn Screening Round: Backend Assignment
 
 Node.js + Express + MongoDB backend for a simple finance/transactions API with JWT auth and role-based access.
 

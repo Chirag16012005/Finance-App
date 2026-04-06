@@ -23,8 +23,8 @@ function App() {
       }
 
       try {
-        // Verify token is still valid by making a request
-        const { data } = await api.get("/users");
+        // Verify token is still valid by fetching current user
+        const { data } = await api.get("/auth/me");
         setUser(data); // Store user data from response
         setLoading(false);
       } catch (err) {
