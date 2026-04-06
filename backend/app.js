@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/User.routes");
 const txRoutes = require("./routes/transaction.routes");
 const summaryRoutes = require("./routes/summary.routes");
+const errorHandler = require("./middleware/error.middleware");
 
 // CORS middleware
 app.use(cors({
@@ -21,5 +22,14 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/transactions", txRoutes);
 app.use("/summary", summaryRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found"
+  });
+});
+
+app.use(errorHandler);
 
 module.exports = app;

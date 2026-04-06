@@ -91,8 +91,9 @@ Body:
 
 Notes:
 
-- `role` is optional (defaults to `viewer` in the model).
-- The current implementation returns the full created user document (including the hashed password).
+- `role` is optional and only supports `viewer` or `analyst`.
+- Admin users are not self-registrable; promote users via the admin-only Users API.
+- The implementation returns a safe user payload (no password hash).
 
 #### Login
 
@@ -119,7 +120,13 @@ All endpoints below require `Authorization: Bearer <token>` and `admin` role.
 
 ### Transactions (admin + analyst)
 
-All endpoints below require `Authorization: Bearer <token>` and role `admin` or `analyst`.
+All endpoints below require `Authorization: Bearer <token>`.
+
+Role behavior:
+
+- `viewer`: read-only (can list only their own transactions)
+- `analyst`: read-only (can list only their own transactions)
+- `admin`: full CRUD (can read all transactions)
 
 #### List transactions (paginated)
 
@@ -182,9 +189,20 @@ The server also attaches `userId` from the authenticated user (`req.user.id`).
 All endpoints below require `Authorization: Bearer <token>`.
 
 - `GET /summary` (`admin`, `analyst`, `viewer`) – returns income/expense totals and balance
-- `GET /summary/recent` (`admin`, `analyst`, `viewer`) – last 5 transactions (sorted by `createdAt`)
-- `GET /summary/category` (`admin`, `analyst`) – totals grouped by `category`
-- `GET /summary/trends` (`admin`, `analyst`) – totals grouped by month (`$month(date)`)
+- `GET /summary/recent` (`admin`, `analyst`, `viewer`) – recent transactions (default `limit=5`)
+- `GET /summary/category` (`admin`, `analyst`, `viewer`) – totals grouped by `category` (supports `startDate`/`endDate`)
+- `GET /summary/trends` (`admin`, `analyst`, `viewer`) – totals grouped by `interval=month|week` (supports `startDate`/`endDate`)
+
+Data visibility:
+
+- `admin` sees system-wide totals
+- non-admin users see only their own transactions in summaries
+
+Useful query params:
+
+- `GET /summary?startDate=2026-01-01&endDate=2026-12-31`
+- `GET /summary/trends?interval=week`
+- `GET /summary/recent?limit=10`
 
 ## Postman
 

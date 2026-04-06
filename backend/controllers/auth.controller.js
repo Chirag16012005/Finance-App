@@ -51,7 +51,7 @@ const RegisterController = async (req, res) => {
       name,
       email,
       password: hashed,
-      role: role || "viewer"
+      role: role === "analyst" ? "analyst" : "viewer"
     });
 
     res.status(201).json({ 
@@ -64,7 +64,7 @@ const RegisterController = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(400).json({ message: err.message || "Registration failed" });
+    res.status(500).json({ message: err.message || "Registration failed" });
   }
 };
 

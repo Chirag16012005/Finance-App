@@ -1,6 +1,3 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User.model");
-
 const authorize = (allowedRoles) => {
   return (req, res, next) => {
     if (!allowedRoles.includes(req.user.role)) {

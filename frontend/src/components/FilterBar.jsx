@@ -12,7 +12,7 @@ export default function FilterBar({ filters, onChange }) {
         <div>
           <label className="block text-sm text-gray-500 mb-1">Type</label>
           <select
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-blue-50"
             value={filters.type || ""}
             onChange={(e) => update({ type: e.target.value })}
           >

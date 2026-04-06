@@ -1,6 +1,12 @@
 const express = require("express");
 const auth = require("../middleware/auth.middleware");
 const authorize = require("../middleware/role.middleware");
+const validate = require("../middleware/validate.middleware");
+const {
+  createTransactionSchema,
+  updateTransactionSchema,
+  listTransactionsQuerySchema
+} = require("../validators/transaction.schema");
 const {
   getTransactions,
   createTransaction,
@@ -10,9 +16,27 @@ const {
 
 const router = express.Router();
 
-router.get("/", auth, authorize(["admin", "analyst"]), getTransactions);
-router.post("/", auth, authorize(["admin", "analyst"]), createTransaction);
-router.patch("/:id", auth, authorize(["admin", "analyst"]), updateTransaction);
-router.delete("/:id", auth, authorize(["admin", "analyst"]), deleteTransaction);
+router.get(
+  "/",
+  auth,
+  authorize(["admin", "analyst", "viewer"]),
+  validate(listTransactionsQuerySchema, "query"),
+  getTransactions
+);
+router.post(
+  "/",
+  auth,
+  authorize(["admin"]),
+  validate(createTransactionSchema),
+  createTransaction
+);
+router.patch(
+  "/:id",
+  auth,
+  authorize(["admin"]),
+  validate(updateTransactionSchema),
+  updateTransaction
+);
+router.delete("/:id", auth, authorize(["admin"]), deleteTransaction);
 
 module.exports = router;
