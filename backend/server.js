@@ -1,10 +1,18 @@
 const mongoose = require("mongoose");
 const app = require("./app");
-const path=require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
-const { MONGO_URI, PORT } = require("./config/env");
+const path = require("path");
+const express = require("express");
 
+// Load env only for local (Render already provides env)
+require("dotenv").config();
+
+const { MONGO_URI } = require("./config/env");
+
+const PORT = process.env.PORT || 3000;
+
+// Static folder (optional, safe)
 app.use(express.static(path.join(__dirname, "public")));
+
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log("DB connected");
@@ -12,5 +20,5 @@ mongoose.connect(MONGO_URI)
   })
   .catch((err) => {
     console.error("DB connection failed:", err.message);
-    process.exitCode = 1;
+    process.exit(1);
   });
