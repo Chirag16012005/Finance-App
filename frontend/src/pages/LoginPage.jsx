@@ -11,6 +11,7 @@ export default function LoginPage({ onLogin, onNavigateToRegister }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPasswordHint, setShowPasswordHint] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -48,8 +49,22 @@ export default function LoginPage({ onLogin, onNavigateToRegister }) {
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
+            onFocus={() => setShowPasswordHint(true)}
+            onBlur={() => setShowPasswordHint(false)}
             placeholder="Enter your password"
           />
+          {showPasswordHint && (
+            <div className="text-xs text-zinc-500 p-2 bg-zinc-800 rounded border border-zinc-700">
+              <p className="font-medium text-zinc-400 mb-1">Password Requirements:</p>
+              <ul className="space-y-1">
+                <li>✓ At least 8 characters</li>
+                <li>✓ 1 uppercase letter (A-Z)</li>
+                <li>✓ 1 lowercase letter (a-z)</li>
+                <li>✓ 1 number (0-9)</li>
+                <li>✓ 1 special character (!@#$%^&*)</li>
+              </ul>
+            </div>
+          )}
           <Button type="submit" disabled={loading} fullWidth>
             {loading ? "Signing in..." : "Sign In"}
           </Button>

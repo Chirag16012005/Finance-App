@@ -10,7 +10,7 @@ body,
 
 body {
   margin: 0;
-  background: #000000; /* black */
-  color: #ffffff; /* white */
+  background: #000000; 
+  color: #ffffff;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
 }
