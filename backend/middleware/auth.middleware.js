@@ -1,5 +1,6 @@
 // src/middleware/auth.middleware.js
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config/env");
 
 const auth = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -9,7 +10,7 @@ const auth = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "SECRET_KEY");
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded; // { id, role }
     next();
   } catch (err) {

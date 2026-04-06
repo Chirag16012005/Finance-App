@@ -20,8 +20,10 @@ router.get("/", auth, authorize(["admin", "analyst", "viewer"]), async (req, res
   let income = 0, expense = 0;
 
   result.forEach(item => {
-    if (item._id === "income") income = item.total;
-    if (item._id === "expense") expense = item.total;
+    if (item._id === "income") 
+        income = item.total;
+    if (item._id === "expense") 
+        expense = item.total;
   });
 
   res.json({

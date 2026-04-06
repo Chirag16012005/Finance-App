@@ -2,6 +2,7 @@ const express=require("express");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const User=require("../models/User.model");
+const { JWT_SECRET } = require("../config/env");
 const router=express.Router();
 const RegisterController=async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -29,7 +30,7 @@ const LoginController=async (req, res) => {
 
   const token = jwt.sign(
     { id: user._id, role: user.role },
-    "SECRET_KEY"
+    JWT_SECRET
   );
 
   res.json({ token });
